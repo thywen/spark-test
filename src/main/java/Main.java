@@ -22,7 +22,6 @@ public class Main {
     private static Object dataToJson(Object data) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
             StringWriter sw = new StringWriter();
             mapper.writeValue(sw, data);
             return sw.toString();

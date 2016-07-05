@@ -1,4 +1,7 @@
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(Include.NON_DEFAULT)
 public class Transaction {
 	private double amount;
 	private String type;
