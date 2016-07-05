@@ -1,34 +1,30 @@
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.SparkBase.port;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-    	Transaction transaction = createDummyTransaction();
+    	Mapper mapper = new Mapper();
+    	TransactionService transactionService = new TransactionService();
+    	transactionService.addTransaction(createDummyTransaction());
         port(getHerokuAssignedPort());
-        get("/hello", (req, res) -> "Hello Heroku World");
-        get("/transaction", (request, response) -> {
-            response.status(200);
-            response.type("application/json");
-            return dataToJson(transaction);
+        get("/transaction/:transaction_id", (request, response) -> {
+        	try{
+        		long id = Long.parseLong(request.params("transaction_id"));
+                response.status(200);
+                response.type("application/json");
+                return mapper.dataToJson(transactionService.getTransaction(id));
+        	}
+        	catch(NumberFormatException e) {
+        		return "Wrong format";
+        	}
         });
     }
 
-    private static Object dataToJson(Object data) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            StringWriter sw = new StringWriter();
-            mapper.writeValue(sw, data);
-            return sw.toString();
-        } catch (IOException e){
-            throw new RuntimeException("IOException from a StringWriter?");
-        }
-	}
+
 
 	static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
