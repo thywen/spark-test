@@ -1,16 +1,16 @@
 import static spark.Spark.get;
+import static spark.Spark.put;
 import static spark.SparkBase.port;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
     	Mapper mapper = new Mapper();
     	TransactionService transactionService = new TransactionService();
+    	Status status = new Status();
     	transactionService.addTransaction(createDummyTransaction());
         port(getHerokuAssignedPort());
+        
         get("/transaction/:transaction_id", (request, response) -> {
         	try{
         		long id = Long.parseLong(request.params("transaction_id"));
@@ -19,12 +19,18 @@ public class Main {
                 return mapper.dataToJson(transactionService.getTransaction(id));
         	}
         	catch(NumberFormatException e) {
-        		return "Wrong format";
+        		return "Wrong format of id";
         	}
         });
+        
+        put("/transaction/:transaction_id", (request, response) -> {
+        	String jsonString = request.body();
+        	Transaction transaction = (Transaction) mapper.JsonToObject(jsonString, Transaction.class);
+        	transactionService.addTransaction(transaction);
+        	return status.statusOK();
+        });
+ 
     }
-
-
 
 	static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
