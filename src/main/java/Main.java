@@ -3,13 +3,12 @@ import static spark.Spark.*;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class Main {
 
     public static void main(String[] args) {
-    	ObjectMapper mapper = new ObjectMapper();
     	Transaction transaction = createDummyTransaction();
         port(getHerokuAssignedPort());
         get("/hello", (req, res) -> "Hello Heroku World");
