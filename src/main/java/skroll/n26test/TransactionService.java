@@ -1,20 +1,20 @@
 package skroll.n26test;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TransactionService {
-	private List<Transaction> transactionList = new ArrayList<Transaction>();
+	private Map<Long, Transaction> transactionHash = new HashMap<Long, Transaction>();
 	
-	public List<Transaction> getAllTransactions() {
-		return transactionList;
+	public Map<Long, Transaction> getAllTransactions() {
+		return transactionHash;
 	}
 	
 	public Transaction getTransaction(long id) {
-		return transactionList.get((int) (id-1));
+		return transactionHash.get(id);
 	}
 	
-	public void addTransaction(Transaction transaction) {
-		transactionList.add(transaction);
+	public void addTransaction(long id, Transaction transaction) {
+		transactionHash.put(id, transaction);
 	}
 
 }

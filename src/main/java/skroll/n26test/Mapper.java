@@ -15,11 +15,12 @@ public class Mapper {
             mapper.writeValue(sw, data);
             return sw.toString();
         } catch (IOException e){
-            throw new RuntimeException("IOException from a StringWriter?");
+            e.printStackTrace();
         }
+        return null;
 	}
     
-    public Object JsonToObject(String jsonString, Class<?> klass) {
+    public Object jsonToObject(String jsonString, Class<?> klass) {
     	try {
 			return mapper.readValue(jsonString, klass);
 		} catch (JsonParseException e) {

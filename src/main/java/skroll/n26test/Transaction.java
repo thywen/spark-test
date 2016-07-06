@@ -1,8 +1,10 @@
 package skroll.n26test;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_DEFAULT)
+@JsonIgnoreProperties({ "transactionId" })
 public class Transaction {
 	private long transactionId;
 	private double amount;
@@ -30,7 +32,7 @@ public class Transaction {
 	public long getTransaction_id() {
 		return transactionId;
 	}
-	public void setTransactionId(long transaction_id) {
-		this.transactionId = transaction_id;
+	public void setTransactionId(long transactionId) {
+		this.transactionId = transactionId;
 	}
 }

@@ -15,7 +15,7 @@ public class StatusTest {
 	}
 	
 	@Test
-	public void StatusOk() {
+	public void statusOk() {
 		JSONObject jo = new JSONObject();
 		jo.put("Status", "OK");
 		assertEquals(jo, status.statusOK());
