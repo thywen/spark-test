@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(Include.NON_DEFAULT)
 @JsonIgnoreProperties({ "transaction_id" })
 public class Transaction {
-	private long transaction_id;
+	private long transactionId;
 	private double amount;
 	private String type;
 	private long parentId;
@@ -30,9 +30,9 @@ public class Transaction {
 		this.amount = amount;
 	}
 	public long getTransaction_id() {
-		return transaction_id;
+		return transactionId;
 	}
-	public void setTransaction_id(long transaction_id) {
-		this.transaction_id = transaction_id;
+	public void setTransactionId(long transaction_id) {
+		this.transactionId = transaction_id;
 	}
 }
