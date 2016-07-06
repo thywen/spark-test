@@ -3,4 +3,4 @@ jdk:
   - oraclejdk8
 script:
   - mvn clean install
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then mvn clean test jacoco:report coveralls:report; fi
+  - mvn clean test jacoco:report coveralls:report
