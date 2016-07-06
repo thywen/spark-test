@@ -34,15 +34,15 @@ public class TransactionServiceTest {
 	
 	@Test
 	public void itemAddedProperly() {
-		transactionService.addTransaction(transaction);
+		transactionService.addTransaction(transactionId, transaction);
 		int numberOfItems = transactionService.getAllTransactions().size();
 		assertEquals("Item not added", 1, numberOfItems);
 	}
 	
 	@Test
 	public void getExistingItem() {
-		transactionService.addTransaction(transaction);
-		Transaction recievedTransaction = transactionService.getTransaction(1);
+		transactionService.addTransaction(transactionId, transaction);
+		Transaction recievedTransaction = transactionService.getTransaction(transactionId);
 		assertEquals("Objects not the same", transaction, recievedTransaction);
 	}
 }
