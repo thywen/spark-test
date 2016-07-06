@@ -4,3 +4,4 @@ jdk:
 script:
   - mvn clean install
   - mvn clean test jacoco:report
+  
