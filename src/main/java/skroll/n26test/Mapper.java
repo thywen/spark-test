@@ -20,7 +20,7 @@ public class Mapper {
         return null;
 	}
     
-    public Object JsonToObject(String jsonString, Class<?> klass) {
+    public Object jsonToObject(String jsonString, Class<?> klass) {
     	try {
 			return mapper.readValue(jsonString, klass);
 		} catch (JsonParseException e) {
