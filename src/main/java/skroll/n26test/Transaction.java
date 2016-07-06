@@ -1,8 +1,10 @@
 package skroll.n26test;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_DEFAULT)
+@JsonIgnoreProperties({ "transaction_id" })
 public class Transaction {
 	private long transaction_id;
 	private double amount;
