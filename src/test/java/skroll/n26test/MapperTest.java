@@ -2,6 +2,7 @@ package skroll.n26test;
 
 import static org.junit.Assert.*;
 
+import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,5 +34,16 @@ public class MapperTest {
 		assertEquals(PARENT_ID, node.get("parent_id").longValue());
 		assertNull(node.get("transaction_id"));
 	}
-
+	
+	@Test
+	public void unMarshallTransaction() {
+		JSONObject jo = new JSONObject();
+		jo.put("type", TYPE);
+		jo.put("amount", AMOUNT);
+		jo.put("transaction_id", TRANSACTION_ID);
+		Transaction transactionFromJson = (Transaction) mapper.jsonToObject(jo.toJSONString(), Transaction.class);
+		assertEquals(transaction.getType(), transactionFromJson.getType());
+		assertEquals(transaction.getTransactionId(), transactionFromJson.getTransactionId());
+		assertEquals(transaction.getAmount(), transactionFromJson.getAmount(), DELTA);
+	}
 }

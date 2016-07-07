@@ -38,6 +38,6 @@ public class TransactionTest {
 	
 	@Test
 	public void transactionId() {
-		assertEquals(TRANSACTION_ID, transaction.getTransaction_id());
+		assertEquals(TRANSACTION_ID, transaction.getTransactionId());
 	}
 }
