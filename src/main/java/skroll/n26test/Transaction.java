@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_DEFAULT)
-@JsonIgnoreProperties({ "transactionId" })
+@JsonIgnoreProperties({ "transaction_id" })
 public class Transaction {
 	private long transactionId;
 	private double amount;
