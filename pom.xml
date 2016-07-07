@@ -40,6 +40,11 @@
             <configuration>
                <source>1.8</source>
                <target>1.8</target>
+       <archive>
+        <manifest>
+          <mainClass>skroll.n26test.Main</mainClass>
+        </manifest>
+      </archive>
             </configuration>
          </plugin>
          <plugin>
@@ -59,7 +64,7 @@
                </descriptorRefs>
                <archive>
                   <manifest>
-                     <mainClass>Main</mainClass>
+                     <mainClass>skroll.n26test.Main</mainClass>
                   </manifest>
                </archive>
             </configuration>
@@ -70,7 +75,7 @@
             <version>1.0.3</version>
             <configuration>
                <jdkVersion>1.8</jdkVersion>
-               <appName>morning-wildwood-69550</appName>
+               <appName>sven-n26-test</appName>
                <processTypes>
                   <!-- Tell Heroku how to launch your application -->
                   <web>java -jar target/n26test-0.0.1-SNAPSHOT-jar-with-dependencies.jar</web>
