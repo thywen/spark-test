@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class MapperTest {
@@ -36,7 +37,7 @@ public class MapperTest {
 	}
 	
 	@Test
-	public void unMarshallTransaction() {
+	public void unMarshallTransaction() throws JsonParseException {
 		JSONObject jo = new JSONObject();
 		jo.put("type", TYPE);
 		jo.put("amount", AMOUNT);
