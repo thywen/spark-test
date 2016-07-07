@@ -7,8 +7,6 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class MapperTest {
