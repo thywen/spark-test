@@ -2,10 +2,13 @@ package skroll.n26test;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class MapperTest {
@@ -36,7 +39,7 @@ public class MapperTest {
 	}
 	
 	@Test
-	public void unMarshallTransaction() {
+	public void unMarshallTransaction() throws IOException {
 		JSONObject jo = new JSONObject();
 		jo.put("type", TYPE);
 		jo.put("amount", AMOUNT);
@@ -45,5 +48,14 @@ public class MapperTest {
 		assertEquals(transaction.getType(), transactionFromJson.getType());
 		assertEquals(transaction.getTransactionId(), transactionFromJson.getTransactionId());
 		assertEquals(transaction.getAmount(), transactionFromJson.getAmount(), DELTA);
+	}
+	
+	@Test(expected=IOException.class)
+	public void brokenTransaction() throws IOException {
+		JSONObject jo = new JSONObject();
+		jo.put("type", TYPE);
+		jo.put("amunt", AMOUNT);
+		jo.put("transaction_id", TRANSACTION_ID);
+		mapper.jsonToObject(jo.toJSONString(), Transaction.class);
 	}
 }
