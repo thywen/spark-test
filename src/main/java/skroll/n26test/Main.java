@@ -5,8 +5,6 @@ import static spark.SparkBase.port;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonParseException;
-
 public class Main {
 
     public static void main(String[] args) {
