@@ -15,9 +15,13 @@ public class Main {
         get("/transaction/:transaction_id", (request, response) -> {
         	try{
         		long id = Long.parseLong(request.params("transaction_id"));
+        		Transaction transaction = transactionService.getTransaction(id);
+        		if (transaction == null){
+        			return status.statusNotFound();
+        		}
                 response.status(200);
                 response.type("application/json");
-                return mapper.dataToJson(transactionService.getTransaction(id));
+                return mapper.dataToJson(transaction);
         	}
         	catch(NumberFormatException e) {
         		response.status(500);

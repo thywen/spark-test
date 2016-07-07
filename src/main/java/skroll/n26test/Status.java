@@ -4,9 +4,20 @@ import org.json.simple.JSONObject;
 public class Status {
 	private final String STATUS_NAME = "Status";
 	private final String OK = "OK";
+	private final String NOT_FOUND = "Not Found";
+	private JSONObject jo;
+	
+	public Status() {
+		jo = new JSONObject();
+	}
+	
 	public JSONObject statusOK(){
-		JSONObject jo = new JSONObject();
 		jo.put(STATUS_NAME, OK);
 		return jo;	
+	}
+	
+	public JSONObject statusNotFound(){
+		jo.put(STATUS_NAME, NOT_FOUND);
+		return jo;
 	}
 }
