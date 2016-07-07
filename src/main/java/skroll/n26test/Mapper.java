@@ -23,16 +23,7 @@ public class Mapper {
     	}
 	}
     
-    public Object jsonToObject(String jsonString, Class<?> klass) {
-    	try {
-			return mapper.readValue(jsonString, klass);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	return null;
+    public Object jsonToObject(String jsonString, Class<?> klass) throws IOException {
+		return mapper.readValue(jsonString, klass);
     }
 }

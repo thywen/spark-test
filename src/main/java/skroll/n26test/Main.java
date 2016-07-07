@@ -3,6 +3,8 @@ import static spark.Spark.get;
 import static spark.Spark.put;
 import static spark.SparkBase.port;
 
+import java.io.IOException;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -30,11 +32,15 @@ public class Main {
         });
         
         put("/transaction/:transaction_id", (request, response) -> {
-        	String jsonString = request.body();
-    		long id = Long.parseLong(request.params("transaction_id"));
-        	Transaction transaction = (Transaction) mapper.jsonToObject(jsonString, Transaction.class);
-        	transactionService.addTransaction(id, transaction);
-        	return status.statusOK();
+        	try {
+	        	String jsonString = request.body();
+	    		long id = Long.parseLong(request.params("transaction_id"));
+	        	Transaction transaction = (Transaction) mapper.jsonToObject(jsonString, Transaction.class);
+	        	transactionService.addTransaction(id, transaction);
+	        	return status.statusOK();
+        	} catch (IOException e) {
+        		return status.statusError();
+        	}
         });
  
     }
