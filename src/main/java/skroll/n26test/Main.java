@@ -5,6 +5,8 @@ import static spark.SparkBase.port;
 
 import java.io.IOException;
 
+import skroll.n26test.utility.Path;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -14,7 +16,7 @@ public class Main {
     	transactionService.addTransaction(29, createDummyTransaction());
         port(getHerokuAssignedPort());
         
-        get("/transaction/:transaction_id", (request, response) -> {
+        get(Path.Web.TRANSACTION, (request, response) -> {
         	try{
         		long id = Long.parseLong(request.params("transaction_id"));
         		Transaction transaction = transactionService.getTransaction(id);
@@ -31,7 +33,7 @@ public class Main {
         	}
         });
         
-        put("/transaction/:transaction_id", (request, response) -> {
+        put(Path.Web.TRANSACTION, (request, response) -> {
         	try {
 	        	String jsonString = request.body();
 	    		long id = Long.parseLong(request.params("transaction_id"));
