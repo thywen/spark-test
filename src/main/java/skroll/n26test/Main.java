@@ -5,6 +5,7 @@ import static spark.SparkBase.port;
 
 import java.io.IOException;
 
+import skroll.n26test.controller.TransactionController;
 import skroll.n26test.utility.Path;
 
 public class Main {
@@ -16,22 +17,7 @@ public class Main {
     	transactionService.addTransaction(29, createDummyTransaction());
         port(getHerokuAssignedPort());
         
-        get(Path.Web.TRANSACTION, (request, response) -> {
-        	try{
-        		long id = Long.parseLong(request.params("transaction_id"));
-        		Transaction transaction = transactionService.getTransaction(id);
-        		if (transaction == null){
-        			return status.statusNotFound();
-        		}
-                response.status(200);
-                response.type("application/json");
-                return mapper.dataToJson(transaction);
-        	}
-        	catch(NumberFormatException e) {
-        		response.status(500);
-        		return "Wrong format of id";
-        	}
-        });
+        get(Path.Web.TRANSACTION, TransactionController.getTransaction);
         
         put(Path.Web.TRANSACTION, (request, response) -> {
         	try {
