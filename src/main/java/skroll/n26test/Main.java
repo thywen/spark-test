@@ -39,6 +39,7 @@ public class Main {
 	        	transactionService.addTransaction(id, transaction);
 	        	return status.statusOK();
         	} catch (IOException e) {
+        		response.status(500);
         		return status.statusError();
         	}
         });
