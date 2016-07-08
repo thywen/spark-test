@@ -11,25 +11,12 @@ import skroll.n26test.utility.Path;
 public class Main {
 
     public static void main(String[] args) {
-    	Mapper mapper = new Mapper();
-    	TransactionService transactionService = new TransactionService();
-    	Status status = new Status();
-    	transactionService.addTransaction(29, createDummyTransaction());
+    	TransactionService.addTransaction(29, createDummyTransaction());
         port(getHerokuAssignedPort());
         
         get(Path.Web.TRANSACTION, TransactionController.getTransaction);
         
-        put(Path.Web.TRANSACTION, (request, response) -> {
-        	try {
-	        	String jsonString = request.body();
-	    		long id = Long.parseLong(request.params("transaction_id"));
-	        	Transaction transaction = (Transaction) mapper.jsonToObject(jsonString, Transaction.class);
-	        	transactionService.addTransaction(id, transaction);
-	        	return status.statusOK();
-        	} catch (IOException e) {
-        		return status.statusError();
-        	}
-        });
+        put(Path.Web.TRANSACTION, TransactionController.putTransaction);
  
     }
 
