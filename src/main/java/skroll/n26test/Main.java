@@ -12,7 +12,7 @@ public class Main {
     	Mapper mapper = new Mapper();
     	TransactionService transactionService = new TransactionService();
     	Status status = new Status();
-    	transactionService.addTransaction(29, createDummyTransaction());
+    	JsonBuilder jsonbuilder = new JsonBuilder();
         port(getHerokuAssignedPort());
         
         get("/transaction/:transaction_id", (request, response) -> {
@@ -54,6 +54,16 @@ public class Main {
     		}
     		return ids;
         });
+        
+        get("/sum/:transaction_id", (request, response) -> {
+	    		long id = Long.parseLong(request.params("transaction_id"));
+        		Transaction transaction = transactionService.getTransaction(id);
+        		if (transaction == null){
+        			return status.statusNotFound();
+        		}
+	    		return jsonbuilder.buildSumJson(transactionService.calculateSum(id));	
+        });
+        
  
     }
 
@@ -64,15 +74,4 @@ public class Main {
         }
         return 4567;
     }
-    
-	private static Transaction createDummyTransaction(){
-		
-		Transaction transaction = new Transaction();
-		transaction.setAmount(30.5);
-		transaction.setType("car");
-		
-		return transaction;
-		
-	}
-
 }

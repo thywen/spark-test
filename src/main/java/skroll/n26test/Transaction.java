@@ -1,4 +1,7 @@
 package skroll.n26test;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -13,6 +16,11 @@ public class Transaction {
 	private double amount;
 	private String type;
 	private long parentId;
+	private List<Long> children;
+	
+	public Transaction() {
+		children = new ArrayList<Long>();
+	}
 	
 	public long getParentId() {
 		return parentId;
@@ -39,5 +47,12 @@ public class Transaction {
 	@JsonProperty
 	public void setTransactionId(long transactionId) {
 		this.transactionId = transactionId;
+	}
+	public List<Long> getChildren() {
+		return this.children;
+	}
+	
+	public void addChild(Long childId) {
+		this.children.add(childId);
 	}
 }
