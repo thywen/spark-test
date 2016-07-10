@@ -100,6 +100,19 @@ public class TransactionServiceTest {
 		assertEquals(AMOUNT, transactionService.calculateSum(TRANSACTION_ID), DELTA);
 	}
 	
+	@Test
+	public void sumWithChildren() {
+		long transactionId = 293;
+		double amount = 23.5;
+		double expectedAmount = amount + AMOUNT;
+		transactionService.addTransaction(TRANSACTION_ID, transaction);
+		Transaction child = buildTransaction(transactionId, "car", amount);
+		child.setParentId(TRANSACTION_ID);
+		transactionService.addTransaction(transactionId, child);
+		double sum = transactionService.calculateSum(TRANSACTION_ID);
+		assertEquals(expectedAmount, sum, DELTA);
+	}
+	
 	private Transaction buildTransaction(long transactionId, String type, double amount) {
 		Transaction transactionToBuild = new Transaction();
 		transactionToBuild.setAmount(amount);
