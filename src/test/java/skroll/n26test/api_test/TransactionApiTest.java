@@ -112,8 +112,6 @@ public class TransactionApiTest {
 		addTransaction(transactionId, dataCreationHelper.createTransaction(newCategory));
 		Response response = get(TYPE_URL + '/' + dataCreationHelper.getExampleType());
 		String[] typesResponse = apiStringHelper.getArrayFromResponse(response);
-		
-		Boolean bla = Arrays.asList(typesResponse).contains(String.valueOf(transactionId));
 		assertFalse(Arrays.asList(typesResponse).contains(String.valueOf(transactionId)));	
 	}
 	
