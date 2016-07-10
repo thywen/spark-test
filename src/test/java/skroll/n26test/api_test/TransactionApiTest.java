@@ -69,13 +69,13 @@ public class TransactionApiTest {
 		addTransaction(transactionId, transaction);
 		JSONObject newTransaction = createTransaction();
 		addTransaction(transactionId, newTransaction);
-		Response r = given().
+		Response response = given().
 			contentType("application/json").
 			body(newTransaction.toJSONString()).
 		when().
 			contentType("application/json").
 			get(transactionUrl + "/" + Long.toString(transactionId));
-		String body = r.body().asString();
+		String body = response.body().asString();
 		assertEquals(newTransaction.toString(), body);
 	}
 	

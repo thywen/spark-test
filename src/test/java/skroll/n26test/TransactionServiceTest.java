@@ -1,6 +1,9 @@
 package skroll.n26test;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +23,14 @@ public class TransactionServiceTest {
 		transaction.setType(type);
 		transaction.setParentId(parentTransactionId);
 		transaction.setTransactionId(transactionId);
+	}
+	
+	@Test
+	public void newTypeSetInArray() {
+		transactionService.addTransaction(transactionId, transaction);
+		ArrayList<Long> types = transactionService.getIdsForType(transaction.getType());
+		assertEquals(1, types.size());
+		assertEquals((long) transaction.getTransactionId(), (long) types.get(0));
 	}
 
 	@Test
