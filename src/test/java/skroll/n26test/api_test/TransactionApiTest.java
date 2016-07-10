@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
@@ -20,8 +22,10 @@ public class TransactionApiTest {
 	private final String BASE_URL = "https://sven-n26-staging.herokuapp.com";
 	private final String TRANSACTION_URL = BASE_URL + "/transaction";
 	private final String TYPE_URL = BASE_URL + "/types";
+	private final String SUM_URL = BASE_URL + "/sum";
 	private DataCreationHelper dataCreationHelper;
 	private ApiStringHelper apiStringHelper;
+	private final double DELTA = 1e-15;
 	
 	@Before
 	public void setUp() {
@@ -111,6 +115,52 @@ public class TransactionApiTest {
 		assertFalse(Arrays.asList(typesResponse).contains(String.valueOf(transactionId)));	
 	}
 	
+	
+	public void checkSumUnkownTransaction() {
+		Long unknownTransaction = Long.parseLong("2302232012");
+		Response resp = get(buildSumUrl(unknownTransaction));
+		assertEquals(new Status().statusNotFound(), resp.asString());
+	}
+	
+	@Test
+	public void checkSumForSingleTransaction() {
+		long transactionId = dataCreationHelper.randomTransactionId();
+		double amount = 23.5;
+		addTransaction(transactionId, dataCreationHelper.createTransaction(amount));
+		Response resp = when().
+				get(buildSumUrl(transactionId));	
+		JsonPath jsonPath = new JsonPath(resp.asString());
+		assertEquals(amount, jsonPath.getDouble("sum"), DELTA);
+	}
+	
+	@Test
+	public void checkSumForMultiTransactionChild() {
+		long transactionId = dataCreationHelper.randomTransactionId();
+		long childTransactionId = dataCreationHelper.randomTransactionId();
+		double amount = 23.5;
+		double childAmount = 5;
+		addTransaction(transactionId, dataCreationHelper.createTransaction(amount));
+		addTransaction(childTransactionId, dataCreationHelper.createTransactionWithParent(transactionId, childAmount));
+		Response resp = when().
+				get(buildSumUrl(childTransactionId));	
+		JsonPath jsonPath = new JsonPath(resp.asString());
+		assertEquals(childAmount, jsonPath.getDouble("sum"), DELTA);
+	}
+	
+	@Test
+	public void checkSumForMultiTransactionParent() {
+		long transactionId = dataCreationHelper.randomTransactionId();
+		long childTransactionId = dataCreationHelper.randomTransactionId();
+		double amount = 23.5;
+		double childAmount = 5;
+		addTransaction(transactionId, dataCreationHelper.createTransaction(amount));
+		addTransaction(childTransactionId, dataCreationHelper.createTransactionWithParent(transactionId, childAmount));
+		Response resp = when().
+				get(buildSumUrl(transactionId));	
+		JsonPath jsonPath = new JsonPath(resp.asString());
+		assertEquals(childAmount + amount, jsonPath.getDouble("sum"), DELTA);
+	}
+	
 	private void addTransaction(long transactionId, JSONObject transaction) {
 		given()
     	.contentType("application/json").
@@ -121,6 +171,10 @@ public class TransactionApiTest {
 	
 	private String buildTransactionUrl(long transactionId) {
 		return TRANSACTION_URL + "/" + Long.toString(transactionId);
+	}
+	
+	private String buildSumUrl(long transactionId) {
+		return SUM_URL + "/" + Long.toString(transactionId);
 	}
 	
 }
