@@ -46,7 +46,6 @@ public class TransactionService {
 		if (oldTransaction != null) {
 			if (oldTransaction.getType() != type) {
 				ArrayList<Long> oldTypes = transactionTypesHash.get(oldTransaction.getType());
-				long idss = oldTransaction.getTransactionId();
 				oldTypes.remove(oldTypes.indexOf(oldTransaction.getTransactionId()));
 			}
 		}
