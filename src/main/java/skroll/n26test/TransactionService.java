@@ -21,6 +21,9 @@ public class TransactionService {
 	}
 	
 	public void addTransaction(long id, Transaction transaction) {
+		if (transaction.getParentId() != 0) {
+			addChildIdToParent(id, transaction.getParentId());
+		}
 		putTypeToMap(transaction.getType(), id);
 		transactionHash.put(id, transaction);
 	}
@@ -39,6 +42,12 @@ public class TransactionService {
 			types.add(id);
 		}
 		transactionTypesHash.put(type, types);
+	}
+	
+	private void addChildIdToParent(long childId, long parentId) {
+		Transaction parent = transactionHash.get(parentId);
+		parent.addChild(childId);
+		transactionHash.put(parentId, parent);	
 	}
 	
 	private void checkOldTransaction(long id, String type){

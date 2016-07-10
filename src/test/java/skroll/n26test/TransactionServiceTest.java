@@ -13,18 +13,13 @@ public class TransactionServiceTest {
 	private final double AMOUNT = 20;
 	private final String TYPE = "car";
 	private final long TRANSACTION_ID = 23;
-	private final long PARENT_TRANSACTION_ID = 22;
 	private final String NEW_TYPE = "home";
 	private final double DELTA = 1e-15;
 	
 	@Before
 	public void setUp() {
 		transactionService = new TransactionService();
-		transaction = new Transaction();
-		transaction.setAmount(AMOUNT);
-		transaction.setType(TYPE);
-		transaction.setParentId(PARENT_TRANSACTION_ID);
-		transaction.setTransactionId(TRANSACTION_ID);
+		transaction = buildTransaction(TRANSACTION_ID, TYPE, AMOUNT);
 	}
 	
 	@Test
@@ -75,13 +70,6 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	public void parentIDSet() {
-		transactionService.addTransaction(TRANSACTION_ID, transaction);
-		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
-		assertEquals(PARENT_TRANSACTION_ID, transaction.getParentId());
-	}
-	
-	@Test
 	public void typeSet() {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
 		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
@@ -93,5 +81,24 @@ public class TransactionServiceTest {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
 		Transaction recievedTransaction = transactionService.getTransaction(TRANSACTION_ID);
 		assertEquals("Objects not the same", transaction, recievedTransaction);
+	}
+	
+	@Test
+	public void addChildToParent() {
+		long transactionId = 293;
+		transactionService.addTransaction(TRANSACTION_ID, transaction);
+		Transaction child = buildTransaction(transactionId, "car", 23.5);
+		child.setParentId(TRANSACTION_ID);
+		transactionService.addTransaction(transactionId, child);
+		Transaction parent = transactionService.getTransaction(TRANSACTION_ID);
+		assertTrue(parent.getChildren().contains(transactionId));
+	}
+	
+	private Transaction buildTransaction(long transactionId, String type, double amount) {
+		Transaction transactionToBuild = new Transaction();
+		transactionToBuild.setAmount(amount);
+		transactionToBuild.setType(type);
+		transactionToBuild.setTransactionId(transactionId);
+		return transactionToBuild;
 	}
 }
