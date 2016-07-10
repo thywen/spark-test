@@ -12,6 +12,7 @@ public class Main {
     	Mapper mapper = new Mapper();
     	TransactionService transactionService = new TransactionService();
     	Status status = new Status();
+    	JsonBuilder jsonbuilder = new JsonBuilder();
     	transactionService.addTransaction(29, createDummyTransaction());
         port(getHerokuAssignedPort());
         
@@ -54,6 +55,12 @@ public class Main {
     		}
     		return ids;
         });
+        
+        get("/sum/:transaction_id", (request, response) -> {
+	    		long id = Long.parseLong(request.params("transaction_id"));
+	    		return jsonbuilder.buildSumJson(transactionService.calculateSum(id));	
+        });
+        
  
     }
 
