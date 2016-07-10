@@ -57,6 +57,10 @@ public class Main {
         
         get("/sum/:transaction_id", (request, response) -> {
 	    		long id = Long.parseLong(request.params("transaction_id"));
+        		Transaction transaction = transactionService.getTransaction(id);
+        		if (transaction == null){
+        			return status.statusNotFound();
+        		}
 	    		return jsonbuilder.buildSumJson(transactionService.calculateSum(id));	
         });
         
