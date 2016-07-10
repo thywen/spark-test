@@ -21,8 +21,8 @@ public class TransactionService {
 	}
 	
 	public void addTransaction(long id, Transaction transaction) {
-		transactionHash.put(id, transaction);
 		putTypeToMap(transaction.getType(), id);
+		transactionHash.put(id, transaction);
 	}
 	
 	public ArrayList<Long> getIdsForType(String type) {
@@ -30,14 +30,24 @@ public class TransactionService {
 	}
 	
 	private void putTypeToMap(String type, long id) {
+		checkOldTransaction(id, type);
 		ArrayList<Long> types = transactionTypesHash.get(type);
 		if (types != null) {
-			//
+			types.add(id);
 		} else {
-			ArrayList<Long> typesArray = new ArrayList<Long>();
-			typesArray.add(id);
-			transactionTypesHash.put(type, typesArray);
+			types = new ArrayList<Long>();
+			types.add(id);
+		}
+		transactionTypesHash.put(type, types);
+	}
+	
+	private void checkOldTransaction(long id, String type){
+		Transaction oldTransaction = transactionHash.get(id);
+		if (oldTransaction != null) {
+			if (oldTransaction.getType() != type) {
+				ArrayList<Long> oldTypes = transactionTypesHash.get(oldTransaction.getType());
+				oldTypes.remove(oldTypes.indexOf(oldTransaction.getTransactionId()));
+			}
 		}
 	}
-
 }
