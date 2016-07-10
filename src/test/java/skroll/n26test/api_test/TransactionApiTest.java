@@ -2,15 +2,16 @@ package skroll.n26test.api_test;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
 import java.util.Random;
 
 import org.json.simple.JSONObject;
 import org.junit.Test;
 import com.jayway.restassured.response.Response;
+import com.jayway.restassured.response.ResponseBody;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import skroll.n26test.Status;
-import skroll.n26test.Transaction;
-import skroll.n26test.TransactionService;
 
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.*;
@@ -18,9 +19,11 @@ import static org.hamcrest.Matchers.*;
 
 
 public class TransactionApiTest {
-	private static String baseUrl = "https://sven-n26-staging.herokuapp.com";
-	private static String transactionUrl = baseUrl + "/transaction";
-	private static long maxId = 23022320;
+	private static String BASE_URL = "https://sven-n26-staging.herokuapp.com";
+	private static String TRANSACTION_URL = BASE_URL + "/transaction";
+	private static String TYPE_URL = BASE_URL + "/types";
+	private static String EXAMPLE_TYPE = "car";
+	private static long MAX_ID = 23022320;
 	
 	@Test
 	public void testPutValidTransactionStatus(){
@@ -31,7 +34,7 @@ public class TransactionApiTest {
 				.contentType("application/json").
 				body(transaction.toJSONString()).
 			when().
-				put(transactionUrl + "/" + Long.toString(transactionId)).
+				put(TRANSACTION_URL + "/" + Long.toString(transactionId)).
 			then().
 				statusCode(200).
 				body(equalTo(statusOk));
@@ -47,7 +50,7 @@ public class TransactionApiTest {
 			contentType("application/json").
 			body(transaction.toJSONString()).
 		when().
-			put(transactionUrl + "/" + Long.toString(transactionId)).
+			put(TRANSACTION_URL + "/" + Long.toString(transactionId)).
 		then().
 			statusCode(500).
 			body(equalTo(statusError));
@@ -65,7 +68,7 @@ public class TransactionApiTest {
 			body(newTransaction.toJSONString()).
 		when().
 			contentType("application/json").
-			get(transactionUrl + "/" + Long.toString(transactionId));
+			get(TRANSACTION_URL + "/" + Long.toString(transactionId));
 		String body = response.body().asString();
 		assertEquals(newTransaction.toString(), body);
 	}
@@ -73,9 +76,19 @@ public class TransactionApiTest {
 	@Test
 	public void testStatusNotFound() {
 		String unknownTransaction = "/2302232012";
-		Response resp = get(transactionUrl + unknownTransaction); 
+		Response resp = get(TRANSACTION_URL + unknownTransaction); 
 		String statusNotFound = new Status().statusNotFound().toJSONString();
 		assertEquals(statusNotFound, resp.asString());
+	}
+	
+	@Test
+	public void getTypes() {
+		long transactionId = randomTransactionId();
+		JSONObject transaction = createTransaction();
+		addTransaction(transactionId, transaction);
+		Response response = get(TYPE_URL + '/' + EXAMPLE_TYPE);
+		String[] body = response.body().asString().replaceAll("[\\p{Pe}\\s]", "").split(",");
+		assertTrue(Arrays.asList(body).contains(String.valueOf(transactionId)));
 	}
 	
 	private void addTransaction(long transactionId, JSONObject transaction) {
@@ -88,14 +101,14 @@ public class TransactionApiTest {
 	
 	private JSONObject createTransaction() {
 		JSONObject jo = new JSONObject();
-		jo.put("type", "Car");
+		jo.put("type", EXAMPLE_TYPE);
 		jo.put("amount", randomAmount());
 		return jo;
 	}
 	
 	private long randomTransactionId(){
 		Random random = new Random();
-		return Math.abs(random.nextLong()) % maxId;
+		return Math.abs(random.nextLong()) % MAX_ID;
 	}
 	
 	private double randomAmount() {
@@ -104,6 +117,6 @@ public class TransactionApiTest {
 	}
 	
 	private String buildTransactionUrl(long transactionId) {
-		return transactionUrl + "/" + Long.toString(transactionId);
+		return TRANSACTION_URL + "/" + Long.toString(transactionId);
 	}
 }
