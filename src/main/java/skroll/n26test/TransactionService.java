@@ -72,11 +72,9 @@ public class TransactionService {
 	
 	private void checkOldTransaction(long id, String type){
 		Transaction oldTransaction = transactionHash.get(id);
-		if (oldTransaction != null) {
-			if (oldTransaction.getType() != type) {
-				ArrayList<Long> oldTypes = transactionTypesHash.get(oldTransaction.getType());
-				oldTypes.remove(oldTypes.indexOf(oldTransaction.getTransactionId()));
-			}
+		if (oldTransaction != null && oldTransaction.getType() != type) {
+			ArrayList<Long> oldTypes = transactionTypesHash.get(oldTransaction.getType());
+			oldTypes.remove(oldTypes.indexOf(oldTransaction.getTransactionId()));
 		}
 	}
 }

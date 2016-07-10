@@ -14,11 +14,7 @@ public class Mapper {
 	}
 	
     public JsonNode dataToJson(Object data) {
-    	try {
-    		return mapper.valueToTree(data);
-    	} catch (IllegalArgumentException e) {
-    		return null;
-    	}
+		return mapper.valueToTree(data);
 	}
     
     public Object jsonToObject(String jsonString, Class<?> klass) throws IOException {
