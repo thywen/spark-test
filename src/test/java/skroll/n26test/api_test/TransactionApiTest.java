@@ -2,19 +2,8 @@ package skroll.n26test.api_test;
 
 import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Random;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 import com.jayway.restassured.response.Response;
