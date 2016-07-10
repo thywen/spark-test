@@ -94,6 +94,12 @@ public class TransactionServiceTest {
 		assertTrue(parent.getChildren().contains(transactionId));
 	}
 	
+	@Test
+	public void sumWithoutChildren() {
+		transactionService.addTransaction(TRANSACTION_ID, transaction);
+		assertEquals(AMOUNT, transactionService.calculateSum(TRANSACTION_ID), DELTA);
+	}
+	
 	private Transaction buildTransaction(long transactionId, String type, double amount) {
 		Transaction transactionToBuild = new Transaction();
 		transactionToBuild.setAmount(amount);

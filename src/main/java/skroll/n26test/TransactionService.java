@@ -1,6 +1,7 @@
 package skroll.n26test;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TransactionService {
@@ -30,6 +31,25 @@ public class TransactionService {
 	
 	public ArrayList<Long> getIdsForType(String type) {
 		return transactionTypesHash.get(type);
+	}
+	
+	public double calculateSum(long id) {
+		Transaction transaction = transactionHash.get(id);
+		if (transaction.getChildren().size() == 0) {
+			return transaction.getAmount();
+		} else {
+			double amount = transaction.getAmount();
+			double amountFromChildren = calculateChildrenAmount(transaction.getChildren());
+			return (amount + amountFromChildren);
+		}
+	}
+	
+	private double calculateChildrenAmount(List<Long> children) {
+		double amount = 0;
+		for (long childId : children) {
+			amount += transactionHash.get(childId).getAmount();
+		}
+		return amount;
 	}
 	
 	private void putTypeToMap(String type, long id) {
