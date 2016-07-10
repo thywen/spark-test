@@ -62,11 +62,13 @@ public class TransactionApiTest {
 			body(equalTo(statusError));
 	}
 	
+	@Test
 	public void updateExistingTransaction(){	
 		long transactionId = randomTransactionId();
 		JSONObject transaction = createTransaction();
 		addTransaction(transactionId, transaction);
 		JSONObject newTransaction = createTransaction();
+		addTransaction(transactionId, newTransaction);
 		Response r = given().
 			contentType("application/json").
 			body(newTransaction.toJSONString()).
@@ -74,7 +76,7 @@ public class TransactionApiTest {
 			contentType("application/json").
 			get(transactionUrl + "/" + Long.toString(transactionId));
 		String body = r.body().asString();
-		assertEquals(transaction.toString(), body);
+		assertEquals(newTransaction.toString(), body);
 	}
 	
 	@Test
@@ -96,7 +98,7 @@ public class TransactionApiTest {
 	private JSONObject createTransaction() {
 		JSONObject jo = new JSONObject();
 		jo.put("type", "Car");
-		jo.put("amount", Double.toString(randomAmount()));
+		jo.put("amount", randomAmount());
 		return jo;
 	}
 	
