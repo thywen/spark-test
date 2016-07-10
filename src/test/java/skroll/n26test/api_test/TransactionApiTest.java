@@ -9,6 +9,8 @@ import org.junit.Test;
 import com.jayway.restassured.response.Response;
 
 import skroll.n26test.Status;
+import skroll.n26test.Transaction;
+import skroll.n26test.TransactionService;
 
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.*;

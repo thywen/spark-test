@@ -15,6 +15,7 @@ public class TransactionServiceTest {
 	private final long TRANSACTION_ID = 23;
 	private final long PARENT_TRANSACTION_ID = 22;
 	private final String NEW_TYPE = "home";
+	private final double DELTA = 1e-15;
 	
 	@Before
 	public void setUp() {
@@ -57,6 +58,34 @@ public class TransactionServiceTest {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
 		int numberOfItems = transactionService.getAllTransactions().size();
 		assertEquals("Item not added", 1, numberOfItems);
+	}
+	
+	@Test
+	public void transactionIDSet() {
+		transactionService.addTransaction(TRANSACTION_ID, transaction);
+		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
+		assertEquals(TRANSACTION_ID, transaction.getTransactionId());
+	}
+	
+	@Test
+	public void amountSet() {
+		transactionService.addTransaction(TRANSACTION_ID, transaction);
+		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
+		assertEquals(AMOUNT, transaction.getAmount(), DELTA);
+	}
+	
+	@Test
+	public void parentIDSet() {
+		transactionService.addTransaction(TRANSACTION_ID, transaction);
+		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
+		assertEquals(PARENT_TRANSACTION_ID, transaction.getParentId());
+	}
+	
+	@Test
+	public void typeSet() {
+		transactionService.addTransaction(TRANSACTION_ID, transaction);
+		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
+		assertEquals(TYPE, transaction.getType());
 	}
 	
 	@Test
