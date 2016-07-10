@@ -70,10 +70,19 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	public void typeSet() {
+	public void addNewType() {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
 		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
-		assertEquals(TYPE, transaction.getType());
+		assertTrue(transactionService.getIdsForType(TYPE).contains(TRANSACTION_ID));
+	}
+	
+	@Test
+	public void addKnownType() {
+		transactionService.addTransaction(TRANSACTION_ID, transaction);
+		Transaction secondTransaction =  buildTransaction(TRANSACTION_ID + 1, TYPE, AMOUNT);
+		transactionService.addTransaction(TRANSACTION_ID +1, secondTransaction);
+		assertTrue(transactionService.getIdsForType(TYPE).contains(TRANSACTION_ID)
+				&& transactionService.getIdsForType(TYPE).contains(TRANSACTION_ID + 1));
 	}
 	
 	@Test

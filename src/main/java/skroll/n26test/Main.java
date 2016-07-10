@@ -13,7 +13,6 @@ public class Main {
     	TransactionService transactionService = new TransactionService();
     	Status status = new Status();
     	JsonBuilder jsonbuilder = new JsonBuilder();
-    	transactionService.addTransaction(29, createDummyTransaction());
         port(getHerokuAssignedPort());
         
         get("/transaction/:transaction_id", (request, response) -> {
@@ -71,15 +70,4 @@ public class Main {
         }
         return 4567;
     }
-    
-	private static Transaction createDummyTransaction(){
-		
-		Transaction transaction = new Transaction();
-		transaction.setAmount(30.5);
-		transaction.setType("car");
-		
-		return transaction;
-		
-	}
-
 }
