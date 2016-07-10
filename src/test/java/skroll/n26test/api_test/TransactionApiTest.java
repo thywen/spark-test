@@ -1,9 +1,6 @@
 package skroll.n26test.api_test;
 
 import static org.junit.Assert.*;
-
-import java.util.Random;
-
 import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +20,6 @@ public class TransactionApiTest {
 	private final String BASE_URL = "https://sven-n26-staging.herokuapp.com";
 	private final String TRANSACTION_URL = BASE_URL + "/transaction";
 	private final String TYPE_URL = BASE_URL + "/types";
-	private final String EXAMPLE_TYPE = "car";
 	private DataCreationHelper dataCreationHelper;
 	private ApiStringHelper apiStringHelper;
 	
