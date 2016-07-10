@@ -4,6 +4,7 @@ import static spark.Spark.put;
 import static spark.SparkBase.port;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -36,12 +37,22 @@ public class Main {
 	        	String jsonString = request.body();
 	    		long id = Long.parseLong(request.params("transaction_id"));
 	        	Transaction transaction = (Transaction) mapper.jsonToObject(jsonString, Transaction.class);
+	        	transaction.setTransactionId(id);
 	        	transactionService.addTransaction(id, transaction);
 	        	return status.statusOK();
         	} catch (IOException e) {
         		response.status(500);
         		return status.statusError();
         	}
+        });
+        
+        get("/types/:type", (request, response) -> {
+    		String type = request.params("type");
+    		ArrayList<Long> ids = transactionService.getIdsForType(type);
+    		if (ids == null) {
+    			return new ArrayList<Long>();
+    		}
+    		return ids;
         });
  
     }
