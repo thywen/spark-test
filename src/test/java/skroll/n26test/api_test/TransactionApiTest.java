@@ -2,13 +2,11 @@ package skroll.n26test.api_test;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
 import java.util.Random;
 
 import org.json.simple.JSONObject;
 import org.junit.Test;
 import com.jayway.restassured.response.Response;
-import com.jayway.restassured.response.ResponseBody;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
 import skroll.n26test.Status;
@@ -84,11 +82,17 @@ public class TransactionApiTest {
 	@Test
 	public void getTypes() {
 		long transactionId = randomTransactionId();
-		JSONObject transaction = createTransaction();
-		addTransaction(transactionId, transaction);
+		addTransaction(transactionId, createTransaction());
 		Response response = get(TYPE_URL + '/' + EXAMPLE_TYPE);
 		String[] body = response.body().asString().replaceAll("[\\p{Pe}\\s]", "").split(",");
 		assertTrue(Arrays.asList(body).contains(String.valueOf(transactionId)));
+	}
+	
+	@Test
+	public void emptyArrayWhenTypeUnknown() {
+		Response response = get(TYPE_URL + '/' + "somerandomcategory");
+		assertEquals(response.body().asString(), "[]");
+		
 	}
 	
 	private void addTransaction(long transactionId, JSONObject transaction) {
