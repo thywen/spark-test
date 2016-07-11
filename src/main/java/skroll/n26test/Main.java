@@ -35,8 +35,8 @@ public class Main {
                 return mapper.dataToJson(transaction);
         	}
         	catch(NumberFormatException e) {
-        		response.status(500);
-        		return "Wrong format of id";
+        		response.status(400);
+        		return status.numberError();
         	}
         });
         
@@ -49,7 +49,7 @@ public class Main {
 	        	transactionService.addTransaction(id, transaction);
 	        	return status.statusOK();
         	} catch (IOException e) {
-        		response.status(500);
+        		response.status(400);
         		return status.statusError();
         	}
         });
@@ -72,8 +72,8 @@ public class Main {
         		}
 	    		return jsonbuilder.buildSumJson(transactionService.calculateSum(id));	
         	} catch(NumberFormatException e) {
-        		response.status(500);
-        		return "Wrong format of id";
+        		response.status(400);
+        		return status.numberError();
         	}
         });
     }
