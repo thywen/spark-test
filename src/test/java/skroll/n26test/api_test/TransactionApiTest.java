@@ -27,7 +27,7 @@ public class TransactionApiTest {
 	private ApiStringHelper apiStringHelper;
 	private JSONObject transaction;
 	private long transactionId;
-	private final double DELTA = 1e-15;
+	private final double DELTA = 1e-5;
 	
 	@Before
 	public void setUp() {
@@ -101,8 +101,7 @@ public class TransactionApiTest {
 	
 	@Test
 	public void getTypes() {
-		long transactionId = dataCreationHelper.randomTransactionId();
-		addTransaction(transactionId, dataCreationHelper.createTransaction());
+		addTransaction(transactionId, transaction);
 		Response response = get(TYPE_URL + '/' + dataCreationHelper.getExampleType());
 		String[] typesResponse = apiStringHelper.getArrayFromResponse(response);
 		assertTrue(Arrays.asList(typesResponse).contains(String.valueOf(transactionId)));
@@ -117,8 +116,7 @@ public class TransactionApiTest {
 	@Test
 	public void updatedTypesOldTypeNotInList(){
 		String newCategory = "Home";
-		long transactionId = dataCreationHelper.randomTransactionId();
-		addTransaction(transactionId, dataCreationHelper.createTransaction());
+		addTransaction(transactionId, transaction);
 		addTransaction(transactionId, dataCreationHelper.createTransaction(newCategory));
 		Response response = get(TYPE_URL + '/' + dataCreationHelper.getExampleType());
 		String[] typesResponse = apiStringHelper.getArrayFromResponse(response);
@@ -134,21 +132,18 @@ public class TransactionApiTest {
 	
 	@Test
 	public void checkSumForSingleTransaction() {
-		long transactionId = dataCreationHelper.randomTransactionId();
-		double amount = 23.5;
+		double amount = dataCreationHelper.randomAmount();
 		addTransaction(transactionId, dataCreationHelper.createTransaction(amount));
-		Response resp = when().
-				get(buildSumUrl(transactionId));	
+		Response resp = get(buildSumUrl(transactionId));	
 		JsonPath jsonPath = new JsonPath(resp.asString());
 		assertEquals(amount, jsonPath.getDouble("sum"), DELTA);
 	}
 	
 	@Test
 	public void checkSumForMultiTransactionChild() {
-		long transactionId = dataCreationHelper.randomTransactionId();
 		long childTransactionId = dataCreationHelper.randomTransactionId();
-		double amount = 23.5;
-		double childAmount = 5;
+		double amount = dataCreationHelper.randomAmount();
+		double childAmount = dataCreationHelper.randomAmount();
 		addTransaction(transactionId, dataCreationHelper.createTransaction(amount));
 		addTransaction(childTransactionId, dataCreationHelper.createTransactionWithParent(transactionId, childAmount));
 		Response resp = when().
@@ -159,10 +154,9 @@ public class TransactionApiTest {
 	
 	@Test
 	public void checkSumForMultiTransactionParent() {
-		long transactionId = dataCreationHelper.randomTransactionId();
 		long childTransactionId = dataCreationHelper.randomTransactionId();
-		double amount = 23.5;
-		double childAmount = 5;
+		double amount = dataCreationHelper.randomAmount();
+		double childAmount = dataCreationHelper.randomAmount();
 		addTransaction(transactionId, dataCreationHelper.createTransaction(amount));
 		addTransaction(childTransactionId, dataCreationHelper.createTransactionWithParent(transactionId, childAmount));
 		Response resp = when().
