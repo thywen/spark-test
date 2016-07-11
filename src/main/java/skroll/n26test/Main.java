@@ -64,12 +64,17 @@ public class Main {
         });
         
         get(Path.SUM, (request, response) -> {
+        	try {
 	    		long id = transactionHelper.getIdFromParam(request);
         		Transaction transaction = transactionService.getTransaction(id);
         		if (transaction == null){
         			return status.statusNotFound();
         		}
 	    		return jsonbuilder.buildSumJson(transactionService.calculateSum(id));	
+        	} catch(NumberFormatException e) {
+        		response.status(500);
+        		return "Wrong format of id";
+        	}
         });
     }
 
