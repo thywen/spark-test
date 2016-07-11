@@ -11,8 +11,8 @@ import spark.Request;
 
 public class TransactionHelperTest {
 	
-	Request mockedRequest;
-	TransactionHelper transactionHelper;
+	private Request mockedRequest;
+	private TransactionHelper transactionHelper;
 
 	@Before
 	public void setUp() {
