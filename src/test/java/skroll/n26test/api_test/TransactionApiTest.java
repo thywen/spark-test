@@ -73,7 +73,7 @@ public class TransactionApiTest {
 		when().
 			put(TRANSACTION_URL + "/" + Long.toString(transactionId)).
 		then().
-			statusCode(500).
+			statusCode(400).
 			body(equalTo(statusError));
 	}
 	
@@ -128,6 +128,16 @@ public class TransactionApiTest {
 		Long unknownTransaction = Long.parseLong("-1");
 		Response resp = get(buildSumUrl(unknownTransaction));
 		assertEquals(new Status().statusNotFound().toJSONString(), resp.asString());
+	}
+	
+	@Test
+	public void checkSumForInvalidChats() {
+		String sumUrl = SUM_URL + "/" + "iwillfail";
+		when().
+			get(sumUrl).
+		then().
+			statusCode(400).
+			body(equalTo(new Status().statusError().toJSONString()));
 	}
 	
 	@Test
