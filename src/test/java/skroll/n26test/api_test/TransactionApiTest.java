@@ -25,18 +25,20 @@ public class TransactionApiTest {
 	private final String SUM_URL = BASE_URL + "/sum";
 	private DataCreationHelper dataCreationHelper;
 	private ApiStringHelper apiStringHelper;
+	private JSONObject transaction;
+	private long transactionId;
 	private final double DELTA = 1e-15;
 	
 	@Before
 	public void setUp() {
 		dataCreationHelper = new DataCreationHelper();
 		apiStringHelper = new ApiStringHelper();
+		transactionId = dataCreationHelper.randomTransactionId();
+		transaction = dataCreationHelper.createTransaction();
 	}
 	
 	@Test
 	public void getTransactionTypes() {
-		long transactionId = dataCreationHelper.randomTransactionId();
-		JSONObject transaction = dataCreationHelper.createTransaction();
 		addTransaction(transactionId, transaction);
 	    given().
         	contentType("application/json").
@@ -50,8 +52,6 @@ public class TransactionApiTest {
 	
 	@Test
 	public void testPutValidTransactionStatus(){
-		long transactionId = dataCreationHelper.randomTransactionId();
-		JSONObject transaction = dataCreationHelper.createTransaction();
 		String statusOk = new Status().statusOK().toJSONString();
 			given()
 				.contentType("application/json").
@@ -65,8 +65,6 @@ public class TransactionApiTest {
 	
 	@Test
 	public void testPutInvalidTransactionStatus(){
-		long transactionId = dataCreationHelper.randomTransactionId();
-		JSONObject transaction = dataCreationHelper.createTransaction();
 		transaction.put("I", "Willfail");
 		String statusError = new Status().statusError().toJSONString();
 		given().
@@ -81,24 +79,21 @@ public class TransactionApiTest {
 	
 	@Test
 	public void updateExistingTransaction(){	
-		long transactionId = dataCreationHelper.randomTransactionId();
-		JSONObject transaction = dataCreationHelper.createTransaction();
 		addTransaction(transactionId, transaction);
 		JSONObject newTransaction = dataCreationHelper.createTransaction();
 		addTransaction(transactionId, newTransaction);
-		Response response = given().
+		given().
 			contentType("application/json").
 			body(newTransaction.toJSONString()).
 		when().
 			contentType("application/json").
-			get(TRANSACTION_URL + "/" + Long.toString(transactionId));
-		String body = response.body().asString();
-		assertEquals(newTransaction.toString(), body);
+			get(TRANSACTION_URL + "/" + Long.toString(transactionId)).
+		then().body(equalTo(newTransaction.toString()));
 	}
 	
 	@Test
 	public void testStatusNotFound() {
-		String unknownTransaction = "/2302232012";
+		String unknownTransaction = "/-2";
 		Response resp = get(TRANSACTION_URL + unknownTransaction); 
 		String statusNotFound = new Status().statusNotFound().toJSONString();
 		assertEquals(statusNotFound, resp.asString());
@@ -130,11 +125,11 @@ public class TransactionApiTest {
 		assertFalse(Arrays.asList(typesResponse).contains(String.valueOf(transactionId)));	
 	}
 	
-	
+	@Test
 	public void checkSumUnkownTransaction() {
-		Long unknownTransaction = Long.parseLong("2302232012");
+		Long unknownTransaction = Long.parseLong("-1");
 		Response resp = get(buildSumUrl(unknownTransaction));
-		assertEquals(new Status().statusNotFound(), resp.asString());
+		assertEquals(new Status().statusNotFound().toJSONString(), resp.asString());
 	}
 	
 	@Test
