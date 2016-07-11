@@ -16,16 +16,31 @@ public class DataCreationHelper {
 		return EXAMPLE_TYPE;
 	}
 	
-	public JSONObject createTransaction(String type) {
+	public JSONObject createTransactionWithParent(long parentId, double amount) {
+		JSONObject jo = createTransaction(amount);
+		jo.put("parent_id", parentId);
+		return jo;
+	}
+
+	public JSONObject createTransaction(String type, double amount) {
 		JSONObject jo = new JSONObject();
 		jo.put("type", type);
-		jo.put("amount", randomAmount());
+		jo.put("amount", amount);
 		return jo;
 	}
 	
-	public JSONObject createTransaction() {
-		return createTransaction(EXAMPLE_TYPE);
+	public JSONObject createTransaction(String type) {
+		return createTransaction(type, randomAmount());
 	}
+	
+	public JSONObject createTransaction() {
+		return createTransaction(EXAMPLE_TYPE, randomAmount());
+	}
+	
+	public JSONObject createTransaction(double amount) {
+		return createTransaction(EXAMPLE_TYPE, amount);
+	}
+	
 	
 	public long randomTransactionId(){
 		Random random = new Random();
