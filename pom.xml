@@ -35,19 +35,16 @@
          <artifactId>lombok</artifactId>
          <version>1.16.6</version>
     	</dependency>
-<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
 <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-core</artifactId>
-    <version>4.3.1.RELEASE</version>
+    <groupId>com.jayway.restassured</groupId>
+    <artifactId>rest-assured</artifactId>
+    <version>2.9.0</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
 <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-context</artifactId>
-    <version>4.3.1.RELEASE</version>
+    <groupId>org.hamcrest</groupId>
+    <artifactId>hamcrest-junit</artifactId>
+    <version>2.0.0.0</version>
 </dependency>
-
    </dependencies>
    <build>
       <plugins>
@@ -93,7 +90,7 @@
             <version>1.0.3</version>
             <configuration>
                <jdkVersion>1.8</jdkVersion>
-               <appName>sven-n26-test</appName>
+               <appName>sven-n26-staging</appName>
                <processTypes>
                   <!-- Tell Heroku how to launch your application -->
                   <web>java -jar target/n26test-0.0.1-SNAPSHOT-jar-with-dependencies.jar</web>
