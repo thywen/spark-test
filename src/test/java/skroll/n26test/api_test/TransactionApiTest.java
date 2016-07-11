@@ -34,6 +34,21 @@ public class TransactionApiTest {
 	}
 	
 	@Test
+	public void getTransactionTypes() {
+		long transactionId = dataCreationHelper.randomTransactionId();
+		JSONObject transaction = dataCreationHelper.createTransaction();
+		addTransaction(transactionId, transaction);
+	    given().
+        	contentType("application/json").
+        when().
+        	get(TRANSACTION_URL + "/" + transactionId).
+    	then().
+	        body(containsString("amount")).
+	        body(containsString("type")).
+	        statusCode(200);
+	}
+	
+	@Test
 	public void testPutValidTransactionStatus(){
 		long transactionId = dataCreationHelper.randomTransactionId();
 		JSONObject transaction = dataCreationHelper.createTransaction();
