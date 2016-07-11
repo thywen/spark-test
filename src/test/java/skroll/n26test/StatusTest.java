@@ -28,5 +28,10 @@ public class StatusTest {
 		jo.put("Status", "Not Found");
 		assertEquals(jo, status.statusNotFound());
 	}
+	
+	public void statusNumberError() {
+		jo.put("Status", "Number Error");
+		assertEquals(jo, status.numberError());
+	}
 
 }
