@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.*;
 
 
 public class TransactionApiTest {
-	private final String BASE_URL = "https://sven-n26-staging.herokuapp.com";
+	private final String BASE_URL = "https://sven-n26-staging.herokuapp.com/TransactionService";
 	private final String TRANSACTION_URL = BASE_URL + "/transaction";
 	private final String TYPE_URL = BASE_URL + "/types";
 	private final String SUM_URL = BASE_URL + "/sum";
