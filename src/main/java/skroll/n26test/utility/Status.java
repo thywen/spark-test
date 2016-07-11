@@ -1,4 +1,4 @@
-package skroll.n26test;
+package skroll.n26test.utility;
 import org.json.simple.JSONObject;
 
 public class Status {

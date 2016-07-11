@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import skroll.n26test.model.Transaction;
+
 public class MapperTest {
 	private Mapper mapper;
 	private Transaction transaction;

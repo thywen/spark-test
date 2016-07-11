@@ -7,19 +7,21 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import skroll.n26test.model.Transaction;
+
 public class TransactionServiceTest {
 	private Transaction transaction;
-	private TransactionService transactionService;
 	private final double AMOUNT = 20;
 	private final String TYPE = "car";
 	private final long TRANSACTION_ID = 23;
 	private final String NEW_TYPE = "home";
 	private final double DELTA = 1e-15;
+	private TransactionService transactionService;
 	
 	@Before
 	public void setUp() {
-		transactionService = new TransactionService();
 		transaction = buildTransaction(TRANSACTION_ID, TYPE, AMOUNT);
+		transactionService = new TransactionService();
 	}
 	
 	@Test
@@ -32,20 +34,16 @@ public class TransactionServiceTest {
 	
 	@Test
 	public void existingType() {
+		String type = "atotalnewtype";
+		transaction = buildTransaction(TRANSACTION_ID, type, AMOUNT);
 		transactionService.addTransaction(transaction.getTransactionId(), transaction);
 		Transaction updatedTransaction = new Transaction();
 		updatedTransaction.setAmount(AMOUNT);
 		updatedTransaction.setType(NEW_TYPE);
 		updatedTransaction.setTransactionId(TRANSACTION_ID);
 		transactionService.addTransaction(updatedTransaction.getTransactionId(), updatedTransaction);
-		assertEquals(0, transactionService.getIdsForType(TYPE).size());
+		assertEquals(0, transactionService.getIdsForType(type).size());
 		assertEquals(1, transactionService.getIdsForType(NEW_TYPE).size());
-	}
-
-	@Test
-	public void emptyListAtBeginning() {
-		int numberOfItems = transactionService.getAllTransactions().size();
-		assertEquals("List is not empty", 0, numberOfItems);
 	}
 	
 	@Test
@@ -72,7 +70,6 @@ public class TransactionServiceTest {
 	@Test
 	public void addNewType() {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
-		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
 		assertTrue(transactionService.getIdsForType(TYPE).contains(TRANSACTION_ID));
 	}
 	

@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import skroll.n26test.model.Transaction;
+
 public class TransactionTest {
 	private Transaction transaction;
 	private final String TYPE = "car";
