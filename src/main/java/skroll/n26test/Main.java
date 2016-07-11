@@ -5,39 +5,25 @@ import static spark.SparkBase.port;
 
 import java.util.ArrayList;
 
+import skroll.n26test.controller.SumController;
 import skroll.n26test.controller.TransactionController;
+import skroll.n26test.controller.TypeController;
 import skroll.n26test.utility.Path;
 
 public class Main {
+	
+	public static TransactionService transactionService = new TransactionService();
 
     public static void main(String[] args) {
-    	TransactionService transactionService = new TransactionService();
-    	Status status = new Status();
-    	JsonBuilder jsonbuilder = new JsonBuilder();
         port(getHerokuAssignedPort());
         
         get(Path.Web.TRANSACTION, TransactionController.getTransaction);
         
         put(Path.Web.TRANSACTION, TransactionController.putTransaction);
         
+        get(Path.Web.TYPE, TypeController.getTypes);
         
-        get("/types/:type", (request, response) -> {
-    		String type = request.params("type");
-    		ArrayList<Long> ids = transactionService.getIdsForType(type);
-    		if (ids == null) {
-    			return new ArrayList<Long>();
-    		}
-    		return ids;
-        });
-        
-        get("/sum/:transaction_id", (request, response) -> {
-	    		long id = Long.parseLong(request.params("transaction_id"));
-        		Transaction transaction = transactionService.getTransaction(id);
-        		if (transaction == null){
-        			return status.statusNotFound();
-        		}
-	    		return jsonbuilder.buildSumJson(transactionService.calculateSum(id));	
-        });
+        get(Path.Web.SUM, SumController.getSum);
  
     }
 

@@ -5,17 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public class TransactionService {
-<<<<<<< HEAD
 	private static Map<Long, Transaction> transactionHash = new HashMap<Long, Transaction>();
-=======
-	private Map<Long, Transaction> transactionHash;
-	private Map<String, ArrayList<Long>> transactionTypesHash;
-	
-	public TransactionService(){		
-		transactionHash = new HashMap<Long, Transaction>();
-		transactionTypesHash = new HashMap<String, ArrayList<Long>>();
-	}
->>>>>>> master
+	private static Map<String, ArrayList<Long>> transactionTypesHash = new HashMap<String, ArrayList<Long>>();
+
 	
 	static Map<Long, Transaction> getAllTransactions() {
 		return transactionHash;
@@ -25,23 +17,19 @@ public class TransactionService {
 		return transactionHash.get(id);
 	}
 	
-<<<<<<< HEAD
 	static public void addTransaction(long id, Transaction transaction) {
-=======
-	public void addTransaction(long id, Transaction transaction) {
 		if (transaction.getParentId() != 0) {
 			addChildIdToParent(id, transaction.getParentId());
 		}
 		putTypeToMap(transaction.getType(), id);
->>>>>>> master
 		transactionHash.put(id, transaction);
 	}
 	
-	public ArrayList<Long> getIdsForType(String type) {
+	public static ArrayList<Long> getIdsForType(String type) {
 		return transactionTypesHash.get(type);
 	}
 	
-	public double calculateSum(long id) {
+	public static double calculateSum(long id) {
 		Transaction transaction = transactionHash.get(id);
 		if (transaction.getChildren().size() == 0) {
 			return transaction.getAmount();
@@ -52,7 +40,7 @@ public class TransactionService {
 		}
 	}
 	
-	private double calculateChildrenAmount(List<Long> children) {
+	private static double calculateChildrenAmount(List<Long> children) {
 		double amount = 0;
 		for (long childId : children) {
 			amount += transactionHash.get(childId).getAmount();
@@ -60,7 +48,7 @@ public class TransactionService {
 		return amount;
 	}
 	
-	private void putTypeToMap(String type, long id) {
+	private static void putTypeToMap(String type, long id) {
 		checkOldTransaction(id, type);
 		ArrayList<Long> types = transactionTypesHash.get(type);
 		if (types != null) {
@@ -72,13 +60,13 @@ public class TransactionService {
 		transactionTypesHash.put(type, types);
 	}
 	
-	private void addChildIdToParent(long childId, long parentId) {
+	private static void addChildIdToParent(long childId, long parentId) {
 		Transaction parent = transactionHash.get(parentId);
 		parent.addChild(childId);
 		transactionHash.put(parentId, parent);	
 	}
 	
-	private void checkOldTransaction(long id, String type){
+	private static void checkOldTransaction(long id, String type){
 		Transaction oldTransaction = transactionHash.get(id);
 		if (oldTransaction != null && oldTransaction.getType() != type) {
 			ArrayList<Long> oldTypes = transactionTypesHash.get(oldTransaction.getType());
