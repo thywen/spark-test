@@ -9,7 +9,7 @@ import skroll.n26test.utility.JsonBuilder;
 
 public class JsonBuilderTest {
 	
-	JsonBuilder jsonBuilder;
+	private JsonBuilder jsonBuilder;
 	
 	@Before
 	public void setUp() {
