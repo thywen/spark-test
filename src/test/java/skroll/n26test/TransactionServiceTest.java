@@ -7,19 +7,21 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import skroll.n26test.model.Transaction;
+
 public class TransactionServiceTest {
 	private Transaction transaction;
-	private TransactionService transactionService;
 	private final double AMOUNT = 20;
 	private final String TYPE = "car";
 	private final long TRANSACTION_ID = 23;
 	private final String NEW_TYPE = "home";
 	private final double DELTA = 1e-15;
+	private TransactionService transactionService;
 	
 	@Before
 	public void setUp() {
-		transactionService = new TransactionService();
 		transaction = buildTransaction(TRANSACTION_ID, TYPE, AMOUNT);
+		transactionService = new TransactionService();
 	}
 	
 	@Test
@@ -32,20 +34,16 @@ public class TransactionServiceTest {
 	
 	@Test
 	public void existingType() {
+		String type = "atotalnewtype";
+		transaction = buildTransaction(TRANSACTION_ID, type, AMOUNT);
 		transactionService.addTransaction(transaction.getTransactionId(), transaction);
 		Transaction updatedTransaction = new Transaction();
 		updatedTransaction.setAmount(AMOUNT);
 		updatedTransaction.setType(NEW_TYPE);
 		updatedTransaction.setTransactionId(TRANSACTION_ID);
 		transactionService.addTransaction(updatedTransaction.getTransactionId(), updatedTransaction);
-		assertEquals(0, transactionService.getIdsForType(TYPE).size());
+		assertEquals(0, transactionService.getIdsForType(type).size());
 		assertEquals(1, transactionService.getIdsForType(NEW_TYPE).size());
-	}
-
-	@Test
-	public void emptyListAtBeginning() {
-		int numberOfItems = transactionService.getAllTransactions().size();
-		assertEquals("List is not empty", 0, numberOfItems);
 	}
 	
 	@Test
@@ -65,15 +63,14 @@ public class TransactionServiceTest {
 	@Test
 	public void amountSet() {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
-		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
+		Transaction transaction = TransactionService.getTransaction(TRANSACTION_ID);
 		assertEquals(AMOUNT, transaction.getAmount(), DELTA);
 	}
 	
 	@Test
 	public void addNewType() {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
-		Transaction transaction = transactionService.getTransaction(TRANSACTION_ID);
-		assertTrue(transactionService.getIdsForType(TYPE).contains(TRANSACTION_ID));
+		assertTrue(TransactionService.getIdsForType(TYPE).contains(TRANSACTION_ID));
 	}
 	
 	@Test
@@ -81,14 +78,14 @@ public class TransactionServiceTest {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
 		Transaction secondTransaction =  buildTransaction(TRANSACTION_ID + 1, TYPE, AMOUNT);
 		transactionService.addTransaction(TRANSACTION_ID +1, secondTransaction);
-		assertTrue(transactionService.getIdsForType(TYPE).contains(TRANSACTION_ID)
-				&& transactionService.getIdsForType(TYPE).contains(TRANSACTION_ID + 1));
+		assertTrue(TransactionService.getIdsForType(TYPE).contains(TRANSACTION_ID)
+				&& TransactionService.getIdsForType(TYPE).contains(TRANSACTION_ID + 1));
 	}
 	
 	@Test
 	public void getExistingItem() {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
-		Transaction recievedTransaction = transactionService.getTransaction(TRANSACTION_ID);
+		Transaction recievedTransaction = TransactionService.getTransaction(TRANSACTION_ID);
 		assertEquals("Objects not the same", transaction, recievedTransaction);
 	}
 	
@@ -99,14 +96,14 @@ public class TransactionServiceTest {
 		Transaction child = buildTransaction(transactionId, "car", 23.5);
 		child.setParentId(TRANSACTION_ID);
 		transactionService.addTransaction(transactionId, child);
-		Transaction parent = transactionService.getTransaction(TRANSACTION_ID);
+		Transaction parent = TransactionService.getTransaction(TRANSACTION_ID);
 		assertTrue(parent.getChildren().contains(transactionId));
 	}
 	
 	@Test
 	public void sumWithoutChildren() {
 		transactionService.addTransaction(TRANSACTION_ID, transaction);
-		assertEquals(AMOUNT, transactionService.calculateSum(TRANSACTION_ID), DELTA);
+		assertEquals(AMOUNT, TransactionService.calculateSum(TRANSACTION_ID), DELTA);
 	}
 	
 	@Test
@@ -118,7 +115,7 @@ public class TransactionServiceTest {
 		Transaction child = buildTransaction(transactionId, "car", amount);
 		child.setParentId(TRANSACTION_ID);
 		transactionService.addTransaction(transactionId, child);
-		double sum = transactionService.calculateSum(TRANSACTION_ID);
+		double sum = TransactionService.calculateSum(TRANSACTION_ID);
 		assertEquals(expectedAmount, sum, DELTA);
 	}
 	

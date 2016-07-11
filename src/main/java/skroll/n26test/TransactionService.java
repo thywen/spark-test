@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import skroll.n26test.model.Transaction;
+
 public class TransactionService {
 	private Map<Long, Transaction> transactionHash;
 	private Map<String, ArrayList<Long>> transactionTypesHash;

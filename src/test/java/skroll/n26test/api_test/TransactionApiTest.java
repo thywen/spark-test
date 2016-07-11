@@ -9,9 +9,9 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
-import skroll.n26test.Status;
 import skroll.n26test.api_test.helpers.ApiStringHelper;
 import skroll.n26test.api_test.helpers.DataCreationHelper;
+import skroll.n26test.utility.Status;
 
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.*;

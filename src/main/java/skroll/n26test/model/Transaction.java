@@ -1,4 +1,4 @@
-package skroll.n26test;
+package skroll.n26test.model;
 import java.util.ArrayList;
 import java.util.List;
 
