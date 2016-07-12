@@ -130,7 +130,6 @@ public class TransactionApiTest {
 		assertEquals(new Status().statusNotFound().toJSONString(), resp.asString());
 	}
 	
-	@Test
 	public void checkSumForInvalidTransactions() {
 		String sumUrl = SUM_URL + "/" + "iwillfail";
 		when().
