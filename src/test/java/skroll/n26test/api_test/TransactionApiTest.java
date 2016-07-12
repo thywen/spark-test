@@ -130,6 +130,7 @@ public class TransactionApiTest {
 		assertEquals(new Status().statusNotFound().toJSONString(), resp.asString());
 	}
 	
+	@Test
 	public void checkSumForInvalidTransactions() {
 		String sumUrl = SUM_URL + "/" + "iwillfail";
 		when().
@@ -139,7 +140,7 @@ public class TransactionApiTest {
 			body(equalTo(new Status().numberError().toJSONString()));
 	}
 	
-
+	@Test
 	public void checkSumForSingleTransaction() {
 		double amount = dataCreationHelper.randomAmount();
 		addTransaction(transactionId, dataCreationHelper.createTransaction(amount));
