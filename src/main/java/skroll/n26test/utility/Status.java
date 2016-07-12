@@ -6,7 +6,7 @@ public class Status {
 	private final String OK = "OK";
 	private final String NOT_FOUND = "Not Found";
 	private final String ERROR = "Error";
-	private final String NUMBER_ERROR = "Number Error";
+	private final String NUMBER_ERROR = "Number format error";
 	private JSONObject jo;
 	
 	public Status() {
