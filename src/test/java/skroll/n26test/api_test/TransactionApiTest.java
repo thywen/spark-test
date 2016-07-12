@@ -131,16 +131,16 @@ public class TransactionApiTest {
 	}
 	
 	@Test
-	public void checkSumForInvalidChats() {
+	public void checkSumForInvalidTransactions() {
 		String sumUrl = SUM_URL + "/" + "iwillfail";
 		when().
 			get(sumUrl).
 		then().
 			statusCode(400).
-			body(equalTo(new Status().statusError().toJSONString()));
+			body(equalTo(new Status().numberError().toJSONString()));
 	}
 	
-	@Test
+
 	public void checkSumForSingleTransaction() {
 		double amount = dataCreationHelper.randomAmount();
 		addTransaction(transactionId, dataCreationHelper.createTransaction(amount));
